@@ -11,7 +11,7 @@ import SwiftUI
 struct HabitIOSApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            SplashView()
         }
     }
 }
