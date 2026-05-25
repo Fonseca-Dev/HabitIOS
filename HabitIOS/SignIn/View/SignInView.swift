@@ -21,7 +21,7 @@ struct SignInView: View {
         
         ZStack {
             if case SignInUIState.goToHomeScreen = viewModel.uiState {
-                Text("Teste")
+                viewModel.homeView()
             } else {
                 NavigationStack {
                     ScrollView(showsIndicators: false) {
@@ -38,7 +38,7 @@ struct SignInView: View {
                                     .font(Font.system(.title).bold())
                                     .padding(.bottom, 8)
                                 
-                                numberField
+                                emailField
                                 
                                 passwordField
                                 
@@ -46,6 +46,15 @@ struct SignInView: View {
                                 
                                 registerLink
                             }
+                        }
+                        
+                        if case SignInUIState.error(let error) = viewModel.uiState {
+                            Text("")
+                                .alert(isPresented: .constant(true)) {
+                                    Alert(title: Text("Habit"), message: Text(error), dismissButton: .default(Text("Ok")){
+                                        // Faz algo quando some o alerta
+                                    })
+                                }
                         }
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -60,7 +69,7 @@ struct SignInView: View {
 }
 
 extension SignInView {
-    var numberField: some View {
+    var emailField: some View {
         TextField("", text: $email)
             .border(Color.black)
     }
@@ -90,7 +99,7 @@ extension SignInView {
 //            let signInViewModel = SignInViewModel()
             ZStack {
                 NavigationLink(
-                    destination: Text("Tela de Cadastro"),
+                    destination: viewModel.signUpView(),
                     label: {
                         Text("Realize seu cadastro")
                     }
