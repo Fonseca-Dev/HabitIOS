@@ -9,6 +9,8 @@ import SwiftUI
 
 struct SignUpView: View {
     
+    @ObservedObject var viewModel: SignUpViewModel
+
     @State private var fullname: String = ""
     @State private var email: String = ""
     @State private var password: String = ""
@@ -16,7 +18,6 @@ struct SignUpView: View {
     @State private var phone: String = ""
     @State private var birthdate: String = ""
     @State private var gender = Gender.male
-    
     
     var body: some View {
         ZStack{
@@ -41,6 +42,14 @@ struct SignUpView: View {
                     Spacer()
                 }.padding(.horizontal, 8)
             }.padding()
+            if case SignUpUIState.error(let error) = viewModel.uiState {
+                Text("")
+                    .alert(isPresented: .constant(true)) {
+                        Alert(title: Text("Habit"), message: Text(error), dismissButton: .default(Text("Ok")){
+                            // Faz algo quando some o alerta
+                        })
+                    }
+            }
         }
     }
 }
@@ -103,11 +112,11 @@ extension SignUpView {
 extension SignUpView {
     var saveButton: some View {
         Button("Cadastrar") {
-            
+            viewModel.signUp()
         }
     }
 }
 
 #Preview {
-    SignUpView()
+    SignUpView(viewModel: SignUpViewModel())
 }
