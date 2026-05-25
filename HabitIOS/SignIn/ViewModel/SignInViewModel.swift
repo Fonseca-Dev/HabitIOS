@@ -38,7 +38,7 @@ class SignInViewModel: ObservableObject {
         self.uiState = .loading
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             // Aqui é chamado depois de 3 segundos
-            self.uiState = .goToHomeScreen
+            self.uiState = .error("Usuario nao existe")
         }
     }
     

@@ -59,7 +59,6 @@ struct SignInView: View {
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .padding(.horizontal, 32)
-                    .background(.white)
                     .navigationBarTitle(Text("Login"), displayMode: .inline)
                     .navigationBarHidden(navigationHidden)
                 }
@@ -70,23 +69,39 @@ struct SignInView: View {
 
 extension SignInView {
     var emailField: some View {
-        TextField("", text: $email)
-            .border(Color.black)
+        EditTextView(
+            text: $email,
+            placeholder: "E-mail",
+            keyboard: .emailAddress,
+            error: "e-mail invalido",
+            failure: !email.isEmail()
+        )
     }
 }
 
 extension SignInView {
     var passwordField: some View {
-        SecureField("", text: $password)
-            .border(Color.black)
+        EditTextView(
+            text: $password,
+            placeholder: "Senha",
+            keyboard: .emailAddress,
+            error: "senha deve ter ao menos 8 caracteres",
+            failure: password.count < 8,
+            isSecure: true
+        )
     }
 }
 
 extension SignInView {
     var enterButton: some View {
-        Button("Entrar") {
-            viewModel.login(email: email, password: password)
-        }
+        LoadingButtonView(
+            action: {
+                viewModel.login(email: email, password: password)
+            },
+            text: "Entrar",
+            disabled: !email.isEmail() || password.count < 8,
+            showProgressBar: self.viewModel.uiState == SignInUIState.loading
+        )
     }
 }
 
@@ -96,7 +111,7 @@ extension SignInView {
             Text("Ainda não possui um login ativo?")
                 .foregroundColor(.gray)
                 .padding(.top, 48)
-//            let signInViewModel = SignInViewModel()
+            //            let signInViewModel = SignInViewModel()
             ZStack {
                 NavigationLink(
                     destination: viewModel.signUpView(),
@@ -104,22 +119,28 @@ extension SignInView {
                         Text("Realize seu cadastro")
                     }
                 )
-//                NavigationLink(
-//                    destination: Text("Tela de Cadastro"),
-//                    tag: 1,
-//                    selection: $action,
-//                    label: {EmptyView()}
-//                )
-//                
-//                Button("Realize seu cadastro") {
-//                    self.action = 1
-//                }
+                //                NavigationLink(
+                //                    destination: Text("Tela de Cadastro"),
+                //                    tag: 1,
+                //                    selection: $action,
+                //                    label: {EmptyView()}
+                //                )
+                //
+                //                Button("Realize seu cadastro") {
+                //                    self.action = 1
+                //                }
             }
         }
     }
 }
 
-#Preview {
+#Preview("Light") {
     let viewModel = SignInViewModel()
     SignInView(viewModel: viewModel)
+}
+
+#Preview("Dark") {
+    let viewModel = SignInViewModel()
+    SignInView(viewModel: viewModel)
+        .preferredColorScheme(.dark)
 }
