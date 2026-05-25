@@ -5,7 +5,7 @@
 //  Created by Kaue Rocha da Fonseca on 25/05/26.
 //
 
-enum SignUpUIState {
+enum SignUpUIState: Equatable {
     case none
     case loading
     case success

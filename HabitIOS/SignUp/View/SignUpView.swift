@@ -10,7 +10,7 @@ import SwiftUI
 struct SignUpView: View {
     
     @ObservedObject var viewModel: SignUpViewModel
-
+    
     @State private var fullname: String = ""
     @State private var email: String = ""
     @State private var password: String = ""
@@ -25,7 +25,7 @@ struct SignUpView: View {
                 VStack(alignment: .center) {
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Cadastro")
-                            .foregroundColor(Color.black)
+                            .foregroundColor(Color("textColor"))
                             .font(Font.system(.title).bold())
                             .padding(.bottom, 8)
                         
@@ -56,43 +56,74 @@ struct SignUpView: View {
 
 extension SignUpView {
     var fullnameField: some View {
-        TextField("", text: $fullname)
-            .border(Color.black)
+        EditTextView(
+            text: $fullname,
+            placeholder: "Entre com seu nome completo *",
+            keyboard: .alphabet,
+            error: "Nome inválido",
+            failure: fullname.count < 3,
+        )
     }
 }
 
 extension SignUpView {
     var emailField: some View {
-        TextField("", text: $email)
-            .border(Color.black)
+        EditTextView(
+            text: $email,
+            placeholder: "Entre com seu e-mail *",
+            keyboard: .emailAddress,
+            error: "e-mail invalido",
+            failure: !email.isEmail()
+        )
     }
 }
 
 extension SignUpView {
     var passwordField: some View {
-        SecureField("", text: $password)
-            .border(Color.black)
+        EditTextView(
+            text: $password,
+            placeholder: "Entre com sua senha *",
+            keyboard: .emailAddress,
+            error: "senha deve ter ao menos 8 caracteres",
+            failure: password.count < 8,
+            isSecure: true
+        )
     }
 }
 
 extension SignUpView {
     var documentField: some View {
-        TextField("", text: $document)
-            .border(Color.black)
+        EditTextView(
+            text: $document,
+            placeholder: "Entre com seu CPF *",
+            keyboard: .numberPad,
+            error: "CPF invalido",
+            failure: document.count < 11,
+        )
     }
 }
 
 extension SignUpView {
     var phoneField: some View {
-        TextField("", text: $phone)
-            .border(Color.black)
+        EditTextView(
+            text: $phone,
+            placeholder: "Entre com seu celular *",
+            keyboard: .numberPad,
+            error: "Entre com o DDD + 8 ou 9 digitos",
+            failure: phone.count < 10 || phone.count >= 12,
+        )
     }
 }
 
 extension SignUpView {
     var birthdateField: some View {
-        TextField("", text: $birthdate)
-            .border(Color.black)
+        EditTextView(
+            text: $birthdate,
+            placeholder: "Entre com sua data de nascimento *",
+            keyboard: .default,
+            error: "Data deve ser dd/MM/yyyy",
+            failure: birthdate.count != 10,
+        )
     }
 }
 
@@ -111,12 +142,35 @@ extension SignUpView {
 
 extension SignUpView {
     var saveButton: some View {
-        Button("Cadastrar") {
-            viewModel.signUp()
-        }
+        LoadingButtonView(
+            action: {
+                viewModel.signUp()
+            },
+            text: "Realize o seu Cadastro",
+            disabled:
+                !email.isEmail() ||
+            password.count < 8 ||
+            fullname.count < 3 ||
+            document.count < 11 ||
+            phone.count < 10 || phone.count >= 12 ||
+            birthdate.count != 10,
+            showProgressBar: self.viewModel.uiState == SignUpUIState.loading
+        )
     }
 }
 
-#Preview {
-    SignUpView(viewModel: SignUpViewModel())
+#Preview("Light") {
+    VStack{
+        SignUpView(viewModel: SignUpViewModel())
+    }
+    .frame(maxWidth: .infinity, maxHeight: .infinity)
+    .preferredColorScheme(.light)
+}
+
+#Preview("Dark") {
+    VStack{
+        SignUpView(viewModel: SignUpViewModel())
+    }
+    .frame(maxWidth: .infinity, maxHeight: .infinity)
+    .preferredColorScheme(.dark)
 }
