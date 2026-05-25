@@ -18,36 +18,43 @@ struct SignInView: View {
     @State var navigationHidden = true
     
     var body: some View {
-        NavigationStack {
-            ScrollView(showsIndicators: false) {
-                VStack(alignment: .center, spacing: 20){
-                    Spacer(minLength: 36)
-                    VStack(alignment: .center) {
-                        Image("logo")
-                            .resizable()
-                            .scaledToFit()
-                            .padding(.horizontal, 48)
-                        
-                        Text("Login")
-                            .foregroundColor(.orange)
-                            .font(Font.system(.title).bold())
-                            .padding(.bottom, 8)
-                        
-                        numberField
-                        
-                        passwordField
-                        
-                        enterButton
-                        
-                        registerLink
+        
+        ZStack {
+            if case SignInUIState.goToHomeScreen = viewModel.uiState {
+                Text("Teste")
+            } else {
+                NavigationStack {
+                    ScrollView(showsIndicators: false) {
+                        VStack(alignment: .center, spacing: 20){
+                            Spacer(minLength: 36)
+                            VStack(alignment: .center) {
+                                Image("logo")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .padding(.horizontal, 48)
+                                
+                                Text("Login")
+                                    .foregroundColor(.orange)
+                                    .font(Font.system(.title).bold())
+                                    .padding(.bottom, 8)
+                                
+                                numberField
+                                
+                                passwordField
+                                
+                                enterButton
+                                
+                                registerLink
+                            }
+                        }
                     }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .padding(.horizontal, 32)
+                    .background(.white)
+                    .navigationBarTitle(Text("Login"), displayMode: .inline)
+                    .navigationBarHidden(navigationHidden)
                 }
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .padding(.horizontal, 32)
-            .background(.white)
-            .navigationBarTitle(Text("Login"), displayMode: .inline)
-            .navigationBarHidden(navigationHidden)
         }
     }
 }
@@ -69,7 +76,7 @@ extension SignInView {
 extension SignInView {
     var enterButton: some View {
         Button("Entrar") {
-            
+            viewModel.login(email: email, password: password)
         }
     }
 }
