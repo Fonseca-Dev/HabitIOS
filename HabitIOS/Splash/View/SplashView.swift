@@ -67,7 +67,6 @@ extension SplashView{
                 .scaledToFit()
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .padding(20)
-                .background(.white)
                 .ignoresSafeArea()
             
             if let error = error {
@@ -84,7 +83,11 @@ extension SplashView{
 
 #Preview {
     Group {
-        let viewModel = SplashViewModel()
-        SplashView(viewModel: viewModel)
+        ZStack{
+            let viewModel = SplashViewModel()
+            SplashView(viewModel: viewModel)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .preferredColorScheme(.dark)
     }
 }

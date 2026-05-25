@@ -10,6 +10,9 @@ import SwiftUI
 
 class SignInViewModel: ObservableObject {
     
+    @Published var email = ""
+    @Published var password = ""
+    
     private var cancellable: AnyCancellable?
     
     // Quando abre a SignInView ja deixa o observavel preparado
@@ -34,7 +37,7 @@ class SignInViewModel: ObservableObject {
         cancellable?.cancel()
     }
     
-    func login(email: String, password: String) {
+    func login() {
         self.uiState = .loading
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             // Aqui é chamado depois de 3 segundos

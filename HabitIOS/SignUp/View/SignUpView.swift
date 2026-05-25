@@ -11,13 +11,6 @@ struct SignUpView: View {
     
     @ObservedObject var viewModel: SignUpViewModel
     
-    @State private var fullname: String = ""
-    @State private var email: String = ""
-    @State private var password: String = ""
-    @State private var document: String = ""
-    @State private var phone: String = ""
-    @State private var birthdate: String = ""
-    @State private var gender = Gender.male
     
     var body: some View {
         ZStack{
@@ -57,11 +50,11 @@ struct SignUpView: View {
 extension SignUpView {
     var fullnameField: some View {
         EditTextView(
-            text: $fullname,
+            text: $viewModel.fullname,
             placeholder: "Entre com seu nome completo *",
             keyboard: .alphabet,
             error: "Nome inválido",
-            failure: fullname.count < 3,
+            failure: viewModel.fullname.count < 3,
         )
     }
 }
@@ -69,11 +62,11 @@ extension SignUpView {
 extension SignUpView {
     var emailField: some View {
         EditTextView(
-            text: $email,
+            text: $viewModel.email,
             placeholder: "Entre com seu e-mail *",
             keyboard: .emailAddress,
             error: "e-mail invalido",
-            failure: !email.isEmail()
+            failure: !viewModel.email.isEmail()
         )
     }
 }
@@ -81,11 +74,11 @@ extension SignUpView {
 extension SignUpView {
     var passwordField: some View {
         EditTextView(
-            text: $password,
+            text: $viewModel.password,
             placeholder: "Entre com sua senha *",
             keyboard: .emailAddress,
             error: "senha deve ter ao menos 8 caracteres",
-            failure: password.count < 8,
+            failure: viewModel.password.count < 8,
             isSecure: true
         )
     }
@@ -94,11 +87,11 @@ extension SignUpView {
 extension SignUpView {
     var documentField: some View {
         EditTextView(
-            text: $document,
+            text: $viewModel.document,
             placeholder: "Entre com seu CPF *",
             keyboard: .numberPad,
             error: "CPF invalido",
-            failure: document.count < 11,
+            failure: viewModel.document.count < 11,
         )
     }
 }
@@ -106,11 +99,11 @@ extension SignUpView {
 extension SignUpView {
     var phoneField: some View {
         EditTextView(
-            text: $phone,
+            text: $viewModel.phone,
             placeholder: "Entre com seu celular *",
             keyboard: .numberPad,
             error: "Entre com o DDD + 8 ou 9 digitos",
-            failure: phone.count < 10 || phone.count >= 12,
+            failure: viewModel.phone.count < 10 || viewModel.phone.count >= 12,
         )
     }
 }
@@ -118,18 +111,18 @@ extension SignUpView {
 extension SignUpView {
     var birthdateField: some View {
         EditTextView(
-            text: $birthdate,
+            text: $viewModel.birthdate,
             placeholder: "Entre com sua data de nascimento *",
             keyboard: .default,
             error: "Data deve ser dd/MM/yyyy",
-            failure: birthdate.count != 10,
+            failure: viewModel.birthdate.count != 10,
         )
     }
 }
 
 extension SignUpView {
     var genderField: some View {
-        Picker("Gender", selection: $gender){
+        Picker("Gender", selection: $viewModel.gender){
             ForEach(Gender.allCases, id: \.self){ value in
                 Text(value.rawValue)
                     .tag(value)
@@ -148,12 +141,12 @@ extension SignUpView {
             },
             text: "Realize o seu Cadastro",
             disabled:
-                !email.isEmail() ||
-            password.count < 8 ||
-            fullname.count < 3 ||
-            document.count < 11 ||
-            phone.count < 10 || phone.count >= 12 ||
-            birthdate.count != 10,
+                !viewModel.email.isEmail() ||
+            viewModel.password.count < 8 ||
+            viewModel.fullname.count < 3 ||
+            viewModel.document.count < 11 ||
+            viewModel.phone.count < 10 || viewModel.phone.count >= 12 ||
+            viewModel.birthdate.count != 10,
             showProgressBar: self.viewModel.uiState == SignUpUIState.loading
         )
     }
