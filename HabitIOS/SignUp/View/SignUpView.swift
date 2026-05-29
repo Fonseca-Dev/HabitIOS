@@ -105,6 +105,12 @@ extension SignUpView {
             error: "Entre com o DDD + 8 ou 9 digitos",
             failure: viewModel.phone.count < 10 || viewModel.phone.count >= 12,
         )
+        .onChange(of: viewModel.phone) { newValue in
+            viewModel.phone = Validation.mask(
+                pattern: "(##)#.####-####",
+                value: newValue
+            )
+        }
     }
 }
 
@@ -113,10 +119,16 @@ extension SignUpView {
         EditTextView(
             text: $viewModel.birthdate,
             placeholder: "Entre com sua data de nascimento *",
-            keyboard: .default,
+            keyboard: .numberPad,
             error: "Data deve ser dd/MM/yyyy",
             failure: viewModel.birthdate.count != 10,
         )
+        .onChange(of: viewModel.birthdate) { newValue in
+            viewModel.birthdate = Validation.mask(
+                pattern: "##/##/####",
+                value: newValue
+            )
+        }
     }
 }
 

@@ -23,19 +23,41 @@ class SignUpViewModel: ObservableObject {
     
     func signUp() {
         uiState = .loading
+        
+        // Pegar a String -> dd/MM/yyyy -> Date
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.dateFormat = "dd/MM/yyyy"
+        
+        let dateFormatted = formatter.date(from: birthdate)
+        
+        // Validar a Data
+        guard let dateFormatted = dateFormatted else {
+            self.uiState = .error("Data inváçida \(self.birthdate)")
+            return
+        }
+        
+        // Date -> yyyy-MM-dd -> String
+        formatter.dateFormat = "yyyy-MM-dd"
+        let birthdate = formatter.string(from: dateFormatted)
+        
+        
+        
         WebService.postUser(
-            fullname: fullname,
-            email: email,
-            document:document,
-            phone: phone,
-            birthdate: birthdate,
-            password: password,
-            gender: gender.index
+            request: SignUpRequest(
+                fullname: fullname,
+                email: email,
+                document: document,
+                phone: phone,
+                birthdate: birthdate,
+                password: password,
+                gender: gender.index
+            )
         )
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-//            self.uiState = .success
-//            self.publisher.send(true)
-//        }
+        //        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        //            self.uiState = .success
+        //            self.publisher.send(true)
+        //        }
     }
     
 }
