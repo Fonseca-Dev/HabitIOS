@@ -5,6 +5,7 @@
 //  Created by Kaue Rocha da Fonseca on 01/06/26.
 //
 import Foundation
+import Combine
 
 class SignInInteractor{
     
@@ -14,7 +15,7 @@ class SignInInteractor{
 
 extension SignInInteractor {
     
-    func login(request: SignInRequest, completion: @escaping (SignInResponse?, SignInErrorResponse?) -> Void){
-        remote.login(request: request, completion: completion)
+    func login(request: SignInRequest) -> Future<SignInResponse, AppError>{
+        return remote.login(request: request)
     }
 }

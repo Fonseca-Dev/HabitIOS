@@ -21,6 +21,8 @@ class SignUpViewModel: ObservableObject {
     
     @Published var uiState: SignUpUIState = .none
     
+    private let interactor: SignUpINteractor
+    
     func signUp() {
         uiState = .loading
         
@@ -43,7 +45,7 @@ class SignUpViewModel: ObservableObject {
         
         
         //Main thread
-        WebService.postUser(
+        interactor.postUser(
             request: SignUpRequest(
                 fullname: fullname,
                 email: email,
@@ -69,26 +71,26 @@ class SignUpViewModel: ObservableObject {
                 
                 // Main thread
                 // Tentativa de fazer login com as credenciais do usuario criado
-                WebService.login(request: SignInRequest(email: self.email, password: self.password)
-                ){successResponse, errorResponse in
-                    // Non Main Thread
-                    // Se der error no login
-                    if let errorSignIn = errorResponse {
-                        DispatchQueue.main.async{
-                            // Agora sim na MainThread
-                            self.uiState = .error(errorSignIn.detail.message)
-                        }
-                    }
-                    
-                    // Se der sucesso no login
-                    if let successSignIn = successResponse {
-                        DispatchQueue.main.async{
-                            print(successSignIn)
-                            self.publisher.send(success)
-                            self.uiState = .success
-                        }
-                    }
-                }
+//                WebService.login(request: SignInRequest(email: self.email, password: self.password)
+//                ){successResponse, errorResponse in
+//                    // Non Main Thread
+//                    // Se der error no login
+//                    if let errorSignIn = errorResponse {
+//                        DispatchQueue.main.async{
+//                            // Agora sim na MainThread
+//                            self.uiState = .error(errorSignIn.detail.message)
+//                        }
+//                    }
+//                    
+//                    // Se der sucesso no login
+//                    if let successSignIn = successResponse {
+//                        DispatchQueue.main.async{
+//                            print(successSignIn)
+//                            self.publisher.send(success)
+//                            self.uiState = .success
+//                        }
+//                    }
+//                }
             }
         }
     }

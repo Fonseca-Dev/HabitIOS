@@ -14,6 +14,8 @@ class SignInViewModel: ObservableObject {
     @Published var password = ""
     
     private var cancellable: AnyCancellable?
+    private var cancellableRequest: AnyCancellable?
+
     
     // Quando abre a SignInView ja deixa o observavel preparado
     private let publisher = PassthroughSubject<Bool, Never>()
@@ -37,28 +39,46 @@ class SignInViewModel: ObservableObject {
     
     deinit{
         cancellable?.cancel()
+        cancellableRequest?.cancel()
     }
     
     func login() {
         self.uiState = .loading
         //Main thread
-        interactor.login(request: SignInRequest(email: email, password: password)
-        ){successResponse, errorResponse in
-            // Non Main Thread
-            if let error = errorResponse {
-                DispatchQueue.main.async{
-                    // Agora sim na MainThread
-                    self.uiState = .error(error.detail.message)
+        cancellableRequest = interactor.login(request: SignInRequest(email: email, password: password))
+            .receive(on: DispatchQueue.main)
+            .sink{ completion in
+                // Aqui acontece o Error ou Finished
+                switch(completion){
+                case .failure(let appError):
+                    self.uiState =  .error(appError.message)
+                    break
+                case .finished:
+                    break
                 }
+            } receiveValue: { success in
+                // Aqui acontece o Sucesso
+                print(success)
+                self.uiState = .goToHomeScreen
             }
-            
-            if let success = successResponse {
-                DispatchQueue.main.async{
-                    print(success)
-                    self.uiState = .goToHomeScreen
-                }
-            }
-        }
+        
+        
+//        {successResponse, errorResponse in
+//            // Non Main Thread
+//            if let error = errorResponse {
+//                DispatchQueue.main.async{
+//                    // Agora sim na MainThread
+//                    self.uiState = .error(error.detail.message)
+//                }
+//            }
+//            
+//            if let success = successResponse {
+//                DispatchQueue.main.async{
+//                    print(success)
+//                    self.uiState = .goToHomeScreen
+//                }
+//            }
+//        }
     }
     
 }
