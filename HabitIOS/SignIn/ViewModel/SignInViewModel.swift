@@ -39,9 +39,22 @@ class SignInViewModel: ObservableObject {
     
     func login() {
         self.uiState = .loading
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            // Aqui é chamado depois de 3 segundos
-            self.uiState = .error("Usuario nao existe")
+        //Main thread
+        WebService.login(request: SignInRequest(email: email, password: password)
+        ){successResponse, errorResponse in
+            // Non Main Thread
+            if let error = errorResponse {
+                DispatchQueue.main.async{
+                    // Agora sim na MainThread
+                    self.uiState = .error(error.detail.message)
+                }
+            }
+            
+            if let success = successResponse {
+                DispatchQueue.main.async{
+                    self.uiState = .goToHomeScreen
+                }
+            }
         }
     }
     

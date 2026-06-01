@@ -55,6 +55,7 @@ class SignUpViewModel: ObservableObject {
             )
         ){successResponse, errorResponse in
             // Non Main Thread
+            // Se der error na criacao do Usuario
             if let error = errorResponse {
                 DispatchQueue.main.async{
                     // Agora sim na MainThread
@@ -62,17 +63,35 @@ class SignUpViewModel: ObservableObject {
                 }
             }
             
+            // Se der sucesso na criacao do usuario
             if let success = successResponse {
-                DispatchQueue.main.async{
-                    self.publisher.send(success)
-                    if success {
-                        self.uiState = .success
+                
+                
+                // Main thread
+                // Tentativa de fazer login com as credenciais do usuario criado
+                WebService.login(request: SignInRequest(email: self.email, password: self.password)
+                ){successResponse, errorResponse in
+                    // Non Main Thread
+                    // Se der error no login
+                    if let errorSignIn = errorResponse {
+                        DispatchQueue.main.async{
+                            // Agora sim na MainThread
+                            self.uiState = .error(errorSignIn.detail.message)
+                        }
+                    }
+                    
+                    // Se der sucesso no login
+                    if let successSignIn = successResponse {
+                        DispatchQueue.main.async{
+                            print(successSignIn)
+                            self.publisher.send(success)
+                            self.uiState = .success
+                        }
                     }
                 }
             }
         }
     }
-    
 }
 
 extension SignUpViewModel{
