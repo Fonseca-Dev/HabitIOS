@@ -98,12 +98,13 @@ extension SignUpView {
 
 extension SignUpView {
     var phoneField: some View {
-        EditTextView(
+        let fieldOnlyNumbers = viewModel.phone.filter{$0.isNumber}
+        return EditTextView(
             text: $viewModel.phone,
             placeholder: "Entre com seu celular *",
             keyboard: .numberPad,
             error: "Entre com o DDD + 8 ou 9 digitos",
-            failure: viewModel.phone.count < 10 || viewModel.phone.count >= 12,
+            failure: fieldOnlyNumbers.count < 10 || fieldOnlyNumbers.count >= 12
         )
         .onChange(of: viewModel.phone) { newValue in
             viewModel.phone = Validation.mask(
@@ -147,7 +148,8 @@ extension SignUpView {
 
 extension SignUpView {
     var saveButton: some View {
-        LoadingButtonView(
+        let fieldOnlyNumbers = viewModel.phone.filter{$0.isNumber}
+        return LoadingButtonView(
             action: {
                 viewModel.signUp()
             },
@@ -157,7 +159,7 @@ extension SignUpView {
             viewModel.password.count < 8 ||
             viewModel.fullname.count < 3 ||
             viewModel.document.count < 11 ||
-            viewModel.phone.count < 10 || viewModel.phone.count >= 12 ||
+            fieldOnlyNumbers.count < 10 || fieldOnlyNumbers.count >= 12 ||
             viewModel.birthdate.count != 10,
             showProgressBar: self.viewModel.uiState == SignUpUIState.loading
         )

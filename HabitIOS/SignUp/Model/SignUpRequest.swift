@@ -21,7 +21,7 @@ struct SignUpRequest: Encodable {
         case email
         case document
         case phone
-        case birthdate
+        case birthdate = "birthday"
         case password
         case gender
     }
