@@ -17,13 +17,15 @@ class SignInViewModel: ObservableObject {
     
     // Quando abre a SignInView ja deixa o observavel preparado
     private let publisher = PassthroughSubject<Bool, Never>()
+    private let interactor: SignInInteractor
     
     @Published var uiState: SignInUIState = .none
     
     // O SignInViewModel começa a escutar esse publisher
     // sink significa: "quando chegar um valor nesse publisher, execute esse bloco".
     // Então sempre que alguém fizer: publisher.send(valor) esse código vai rodar.
-    init(){
+    init(interactor: SignInInteractor){
+        self.interactor = interactor
         cancellable = publisher.sink { value  in
             print("Usuario criado! goToHome: \(value)")
             
@@ -40,7 +42,7 @@ class SignInViewModel: ObservableObject {
     func login() {
         self.uiState = .loading
         //Main thread
-        WebService.login(request: SignInRequest(email: email, password: password)
+        interactor.login(request: SignInRequest(email: email, password: password)
         ){successResponse, errorResponse in
             // Non Main Thread
             if let error = errorResponse {
@@ -52,6 +54,7 @@ class SignInViewModel: ObservableObject {
             
             if let success = successResponse {
                 DispatchQueue.main.async{
+                    print(success)
                     self.uiState = .goToHomeScreen
                 }
             }

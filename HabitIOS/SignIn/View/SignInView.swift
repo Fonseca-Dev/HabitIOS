@@ -132,12 +132,12 @@ extension SignInView {
 }
 
 #Preview("Light") {
-    let viewModel = SignInViewModel()
+    let viewModel = SignInViewModel(interactor: SignInInteractor())
     SignInView(viewModel: viewModel)
 }
 
 #Preview("Dark") {
-    let viewModel = SignInViewModel()
+    let viewModel = SignInViewModel(interactor: SignInInteractor())
     SignInView(viewModel: viewModel)
         .preferredColorScheme(.dark)
 }
