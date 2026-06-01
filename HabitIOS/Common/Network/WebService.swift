@@ -45,6 +45,7 @@ enum WebService {
         urlRequest.httpBody = jsonData
         
         let task = URLSession.shared.dataTask(with: urlRequest){data,response,error in
+            // Roda em backgorund (Non-MainThread)
             guard let data = data, error == nil else {
                 print(error)
                 completion(.failure(.internalServerError, nil))
@@ -63,26 +64,29 @@ enum WebService {
                 }
             }
             
+            print(String(data: data, encoding: .utf8)!)
+            
             print("response\n \(response)")
             
         }
         task.resume()
     }
     
-    static func postUser(request: SignUpRequest){
+    // Se minha api devolver sucesso eu vou ter um Verdadeiro ou Falso, senão eu vou ter um ErrorResponse
+    static func postUser(request: SignUpRequest, completion: @escaping (Bool?, ErrorResponse?) -> Void){
         call(path: .postUser, body: request){ result in
             switch result {
             case .failure(let error, let data):
                 if let data = data {
                     if error == .badRequest {
-                        print(String(data: data, encoding: .utf8)!)
                         let decoder = JSONDecoder()
-                        let response = try? decoder.decode(SignUpResponse.self, from: data)
-                        print(response?.detail)
+                        let response = try? decoder.decode(ErrorResponse.self, from: data)
+                        completion(nil, response)
                     }
                 }
                 break
             case .success(let data):
+                completion(true, nil)
                 break
             }
         }

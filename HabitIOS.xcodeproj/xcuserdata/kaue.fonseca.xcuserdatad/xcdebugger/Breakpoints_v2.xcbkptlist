@@ -14,9 +14,9 @@
             filePath = "HabitIOS/Common/Network/WebService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "75"
-            endingLineNumber = "75"
-            landmarkName = "postUser(request:)"
+            startingLineNumber = "79"
+            endingLineNumber = "79"
+            landmarkName = "postUser(request:completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -30,9 +30,9 @@
             filePath = "HabitIOS/Common/Network/WebService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "76"
-            endingLineNumber = "76"
-            landmarkName = "postUser(request:)"
+            startingLineNumber = "80"
+            endingLineNumber = "80"
+            landmarkName = "postUser(request:completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -46,9 +46,9 @@
             filePath = "HabitIOS/Common/Network/WebService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "74"
-            endingLineNumber = "74"
-            landmarkName = "postUser(request:)"
+            startingLineNumber = "78"
+            endingLineNumber = "78"
+            landmarkName = "postUser(request:completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -66,36 +66,6 @@
             endingLineNumber = "47"
             landmarkName = "call(path:body:completion:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "01D8201E-86CF-4C1E-B099-560B561D32D4 - 924b6d80afe6485f"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "static HabitIOS.WebService.call&lt;&#x3c4;_0_0 where &#x3c4;_0_0: Swift.Encodable&gt;(path: HabitIOS.WebService.Endpoint, body: &#x3c4;_0_0, completion: (HabitIOS.WebService.Result) -&gt; ()) -&gt; ()"
-                  moduleName = "HabitIOS.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/kaue.fonseca/Documents/Curso_Tiago_Aguiar_iOS/HabitIOS/HabitIOS/Common/Network/WebService.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "47"
-                  endingLineNumber = "47">
-               </Location>
-               <Location
-                  uuid = "01D8201E-86CF-4C1E-B099-560B561D32D4 - 43ea7690673da1f9"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 @Sendable (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in static HabitIOS.WebService.call&lt;&#x3c4;_0_0 where &#x3c4;_0_0: Swift.Encodable&gt;(path: HabitIOS.WebService.Endpoint, body: &#x3c4;_0_0, completion: (HabitIOS.WebService.Result) -&gt; ()) -&gt; ()"
-                  moduleName = "HabitIOS.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/kaue.fonseca/Documents/Curso_Tiago_Aguiar_iOS/HabitIOS/HabitIOS/Common/Network/WebService.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "48"
-                  endingLineNumber = "48">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -108,8 +78,8 @@
             filePath = "HabitIOS/Common/Network/WebService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "55"
-            endingLineNumber = "55"
+            startingLineNumber = "56"
+            endingLineNumber = "56"
             landmarkName = "call(path:body:completion:)"
             landmarkType = "7">
          </BreakpointContent>

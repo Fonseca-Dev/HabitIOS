@@ -42,7 +42,7 @@ class SignUpViewModel: ObservableObject {
         let birthdate = formatter.string(from: dateFormatted)
         
         
-        
+        //Main thread
         WebService.postUser(
             request: SignUpRequest(
                 fullname: fullname,
@@ -53,11 +53,24 @@ class SignUpViewModel: ObservableObject {
                 password: password,
                 gender: gender.index
             )
-        )
-        //        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-        //            self.uiState = .success
-        //            self.publisher.send(true)
-        //        }
+        ){successResponse, errorResponse in
+            // Non Main Thread
+            if let error = errorResponse {
+                DispatchQueue.main.async{
+                    // Agora sim na MainThread
+                    self.uiState = .error(error.detail!)
+                }
+            }
+            
+            if let success = successResponse {
+                DispatchQueue.main.async{
+                    self.publisher.send(success)
+                    if success {
+                        self.uiState = .success
+                    }
+                }
+            }
+        }
     }
     
 }
