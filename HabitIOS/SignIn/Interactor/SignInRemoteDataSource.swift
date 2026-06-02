@@ -46,7 +46,6 @@ class SignInRemoteDataSource {
                         let decoder = JSONDecoder()
                         let response = try? decoder.decode(SignInResponse.self, from: data)
                         //completion(response, nil)
-                        
                         guard let response = response else {
                             print("Log: Error parser \(String(data: data, encoding: .utf8)!)")
                             return
