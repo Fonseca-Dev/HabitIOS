@@ -21,7 +21,20 @@ class SignUpViewModel: ObservableObject {
     
     @Published var uiState: SignUpUIState = .none
     
-    private let interactor: SignUpINteractor
+    private let interactor: SignUpInteractor
+    
+    private var cancellableSignUpRequest: AnyCancellable?
+    private var cancellableSignInRequest: AnyCancellable?
+    
+    
+    init(interactor: SignUpInteractor){
+        self.interactor = interactor
+    }
+    
+    deinit{
+        cancellableSignUpRequest?.cancel()
+        cancellableSignInRequest?.cancel()
+    }
     
     func signUp() {
         uiState = .loading
@@ -45,7 +58,7 @@ class SignUpViewModel: ObservableObject {
         
         
         //Main thread
-        interactor.postUser(
+        cancellableSignUpRequest = interactor.signUp(
             request: SignUpRequest(
                 fullname: fullname,
                 email: email,
@@ -55,44 +68,39 @@ class SignUpViewModel: ObservableObject {
                 password: password,
                 gender: gender.index
             )
-        ){successResponse, errorResponse in
-            // Non Main Thread
-            // Se der error na criacao do Usuario
-            if let error = errorResponse {
-                DispatchQueue.main.async{
-                    // Agora sim na MainThread
-                    self.uiState = .error(error.detail!)
-                }
+        )
+        .receive(on: DispatchQueue.main)
+        .sink{completion in
+            switch(completion){
+            case .failure(let appError):
+                self.uiState = .error(appError.message)
+                break
+            case .finished:
+                break
             }
-            
-            // Se der sucesso na criacao do usuario
-            if let success = successResponse {
-                
-                
-                // Main thread
-                // Tentativa de fazer login com as credenciais do usuario criado
-//                WebService.login(request: SignInRequest(email: self.email, password: self.password)
-//                ){successResponse, errorResponse in
-//                    // Non Main Thread
-//                    // Se der error no login
-//                    if let errorSignIn = errorResponse {
-//                        DispatchQueue.main.async{
-//                            // Agora sim na MainThread
-//                            self.uiState = .error(errorSignIn.detail.message)
-//                        }
-//                    }
-//                    
-//                    // Se der sucesso no login
-//                    if let successSignIn = successResponse {
-//                        DispatchQueue.main.async{
-//                            print(successSignIn)
-//                            self.publisher.send(success)
-//                            self.uiState = .success
-//                        }
-//                    }
-//                }
+        } receiveValue: { success in
+            // Aqui eu confirmo se success veio como true, pois é retornado um Booleano
+            if success {
+                self.cancellableSignInRequest = self.interactor.login(request: SignInRequest(email: self.email, password: self.password))
+                    .receive(on: DispatchQueue.main)
+                    .sink{ completion in
+                        // Aqui acontece o Error ou Finished
+                        switch(completion){
+                        case .failure(let appError):
+                            self.uiState =  .error(appError.message)
+                            break
+                        case .finished:
+                            break
+                        }
+                    } receiveValue: { successSignIn in
+                        // Aqui acontece o Sucesso
+                        print(successSignIn)
+                        self.publisher.send(success)
+                        self.uiState = .success
+                    }
             }
         }
+        
     }
 }
 

@@ -168,7 +168,7 @@ extension SignUpView {
 
 #Preview("Light") {
     VStack{
-        SignUpView(viewModel: SignUpViewModel())
+        SignUpView(viewModel: SignUpViewModel(interactor: SignUpInteractor()))
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .preferredColorScheme(.light)
@@ -176,7 +176,7 @@ extension SignUpView {
 
 #Preview("Dark") {
     VStack{
-        SignUpView(viewModel: SignUpViewModel())
+        SignUpView(viewModel: SignUpViewModel(interactor: SignUpInteractor()))
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .preferredColorScheme(.dark)

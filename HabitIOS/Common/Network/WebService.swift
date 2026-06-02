@@ -72,6 +72,8 @@ enum WebService {
             
             if let r = response as? HTTPURLResponse {
                 switch r.statusCode {
+                case 500:
+                    completion(.failure(.internalServerError, data))
                 case 401:
                     completion(.failure(.unauthorized, data))
                     break
@@ -95,21 +97,6 @@ enum WebService {
     
     // Se minha api devolver sucesso eu vou ter um Verdadeiro ou Falso, senão eu vou ter um ErrorResponse
     static func postUser(request: SignUpRequest, completion: @escaping (Bool?, ErrorResponse?) -> Void){
-        call(path: .postUser, body: request){ result in
-            switch result {
-            case .failure(let error, let data):
-                if let data = data {
-                    if error == .badRequest {
-                        let decoder = JSONDecoder()
-                        let response = try? decoder.decode(ErrorResponse.self, from: data)
-                        completion(nil, response)
-                    }
-                }
-                break
-            case .success(let data):
-                completion(true, nil)
-                break
-            }
-        }
+        
     }
 }

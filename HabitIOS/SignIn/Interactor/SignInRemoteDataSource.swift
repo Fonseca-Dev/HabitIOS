@@ -7,12 +7,12 @@
 import Foundation
 import Combine
 
-class RemoteDataSource {
+class SignInRemoteDataSource {
     
     // Padrao singleton
     // Temos 1 unico objeto vivo dentro da aplicacao
     
-    static var shared: RemoteDataSource = RemoteDataSource()
+    static var shared: SignInRemoteDataSource = SignInRemoteDataSource()
     
     private init(){
         
@@ -34,6 +34,11 @@ class RemoteDataSource {
                                 let response = try? decoder.decode(SignInErrorResponse.self, from: data)
                                 //completion(nil, response)
                                 promise(.failure(AppError.response(message: response?.detail.message ?? "Erro desconhecido no servidor")))
+                            }
+                            if error == .internalServerError {
+                                let decoder = JSONDecoder()
+                                let response = try? decoder.decode(ErrorResponse.self, from: data)
+                                promise(.failure(AppError.response(message: response?.detail ?? "Erro desconhecido no servidor")))
                             }
                         }
                         break
