@@ -20,7 +20,7 @@ struct SplashView: View {
                 // Navegar para a proxima tela
                 viewModel.signInView()
             case .goToHomeScreen:
-                Text("Carregar tela de home")
+                viewModel.homeView()
             case .error(let msg):
                 loadingView(error: msg)
             }
@@ -84,7 +84,7 @@ extension SplashView{
 #Preview {
     Group {
         ZStack{
-            let viewModel = SplashViewModel()
+            let viewModel = SplashViewModel(interactor: SplashInteractor())
             SplashView(viewModel: viewModel)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
