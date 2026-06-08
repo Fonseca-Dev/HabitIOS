@@ -19,7 +19,7 @@ struct HabitView: View {
                 NavigationView{
                     
                     ScrollView(showsIndicators: false) {
-                        VStack{
+                        VStack(spacing: 12){
                             
                             topContainer
                             
@@ -97,6 +97,7 @@ extension HabitView{
                     maxHeight: .infinity)
         ){
             Label("Criar Hábito", systemImage: "plus.app")
+                .modifier(ButtonStyle())
         }
         .padding(.horizontal, 16)
     }
