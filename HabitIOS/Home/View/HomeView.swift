@@ -7,12 +7,37 @@
 
 import SwiftUI
 
-    struct HomeView: View {
-        var body: some View {
-            Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+struct HomeView: View {
+    
+    @ObservedObject var viewModel: HomeViewModel
+    
+    @State var selection = 0
+    
+    var body: some View {
+        TabView(selection: $selection) {
+            viewModel.habitView()
+                .tabItem {
+                    Image(systemName: "square.grid.2x2")
+                    Text("Hábitos")
+                }.tag(0)
+            
+            Text("Conteúdo de gráficos \(selection)")
+                .tabItem {
+                    Image(systemName: "chart.bar")
+                    Text("Gráficos")
+                }.tag(1)
+            
+            Text("Conteúdo de perfil \(selection)")
+                .tabItem {
+                    Image(systemName: "person.crop.circle")
+                    Text("Perfil")
+                }.tag(2)
         }
+        .background(.white)
+        .accentColor(.orange)
     }
+}
 
 #Preview {
-    HomeView()
+    HomeView(viewModel: HomeViewModel())
 }
