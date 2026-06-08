@@ -78,13 +78,13 @@ class SignUpViewModel: ObservableObject {
             case .finished:
                 break
             }
-        } receiveValue: { success in
+        } receiveValue: { created in
             // Aqui eu confirmo se success veio como true, pois é retornado um Booleano
-            if success {
+            if created {
                 self.cancellableSignInRequest = self.interactor.login(request: SignInRequest(email: self.email, password: self.password))
                     .receive(on: DispatchQueue.main)
                     .sink{ completion in
-                        // Aqui acontece o Error ou Finished
+                        // Aqui acontece o Error ou Finished do Login
                         switch(completion){
                         case .failure(let appError):
                             self.uiState =  .error(appError.message)
@@ -92,10 +92,18 @@ class SignUpViewModel: ObservableObject {
                         case .finished:
                             break
                         }
-                    } receiveValue: { successSignIn in
-                        // Aqui acontece o Sucesso
-                        print(successSignIn)
-                        self.publisher.send(success)
+                    } receiveValue: { success in
+                        // Aqui acontece o Sucesso de Login
+                        print(success)
+                        let auth = UserAuth(
+                            idToken: success.accessToken,
+                            refreshToken: success.refreshToken,
+                            // Aqui eu salvo no banco de Dados a Hora que foi salvo + o tempo de expiracao
+                            expires: Date().timeIntervalSince1970 + Double(success.expires),
+                            tokenType: success.tokenType
+                        )
+                        self.interactor.insertAuth(userAuth: auth)
+                        self.publisher.send(created)
                         self.uiState = .success
                     }
             }

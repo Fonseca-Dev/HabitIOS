@@ -1,35 +1,30 @@
 //
-//  SignUpRemoteDataSource.swift
+//  SplashRemoteDataSource.swift
 //  HabitIOS
 //
-//  Created by Kaue Rocha da Fonseca on 01/06/26.
+//  Created by Kaue Rocha da Fonseca on 02/06/26.
 //
-
 import Foundation
 import Combine
 
-class SignUpRemoteDataSource {
-    
-    // Padrao singleton
-    // Temos 1 unico objeto vivo dentro da aplicacao
-    
-    static var shared: SignUpRemoteDataSource = SignUpRemoteDataSource()
+class SplashRemoteDataSource {
+    static var shared: SplashRemoteDataSource = SplashRemoteDataSource()
     
     private init(){
         
     }
     
-    func signUp(request: SignUpRequest) -> Future<Bool, AppError> {
-        return Future<Bool, AppError> {promise in
-            WebService.call(path: .postUser, method: .post, body: request){ result in
+    func refreshToken(request: RefreshRequest) -> Future<SignInResponse, AppError> {
+        return Future<SignInResponse, AppError> {promise in
+            WebService.call(path: .refreshToken, method: .put, body: request) { result in
                 switch result {
                 case .failure(let error, let data):
                     if let data = data {
-                        if error == .badRequest {
+                        if error == .unauthorized {
                             let decoder = JSONDecoder()
-                            let response = try? decoder.decode(ErrorResponse.self, from: data)
+                            let response = try? decoder.decode(SignInErrorResponse.self, from: data)
                             //completion(nil, response)
-                            promise(.failure(AppError.response(message: response?.detail ?? "Erro desconhecido no servidor")))
+                            promise(.failure(AppError.response(message: response?.detail.message ?? "Erro desconhecido no servidor")))
                         }
                         if error == .internalServerError {
                             let decoder = JSONDecoder()
@@ -40,13 +35,13 @@ class SignUpRemoteDataSource {
                     break
                 case .success(let data):
                     let decoder = JSONDecoder()
-                    let response = try? decoder.decode(SignUpResponse.self, from: data)
-                    //completion(true, nil)
-                    guard response != nil else {
+                    let response = try? decoder.decode(SignInResponse.self, from: data)
+                    //completion(response, nil)
+                    guard let response = response else {
                         print("Log: Error parser \(String(data: data, encoding: .utf8)!)")
                         return
                     }
-                    promise(.success(true))
+                    promise(.success(response))
                     break
                 }
             }

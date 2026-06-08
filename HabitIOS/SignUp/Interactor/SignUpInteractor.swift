@@ -10,7 +10,7 @@ import Combine
 class SignUpInteractor{
     private let signUpRemote: SignUpRemoteDataSource = .shared
     private let signInRemote: SignInRemoteDataSource = .shared
-    // private let local: LocalDatSource
+    private let local: LocalDataSource = .shared
 }
 
 extension SignUpInteractor {
@@ -20,5 +20,9 @@ extension SignUpInteractor {
     
     func login(request: SignInRequest) -> Future<SignInResponse, AppError>{
         return signInRemote.login(request: request)
+    }
+    
+    func insertAuth(userAuth: UserAuth){
+        return local.insertUserAuth(userAuth: userAuth)
     }
 }
