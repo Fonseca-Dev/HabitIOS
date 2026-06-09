@@ -121,10 +121,10 @@ extension HabitView{
 }
 
 #Preview("Light") {
-    HomeViewRouter.makeHabitView()
+    HomeViewRouter.makeHabitView(viewModel: HabitViewModel(interactor: HabitInteractor()))
 }
 
 #Preview("Dark") {
-    HomeViewRouter.makeHabitView()
+    HomeViewRouter.makeHabitView(viewModel: HabitViewModel(interactor: HabitInteractor()))
         .preferredColorScheme(.dark)
 }

@@ -16,7 +16,7 @@ class HabitViewModel: ObservableObject {
     @Published var title = ""
     @Published var headline = ""
     @Published var desc = ""
-    
+        
     private let interactor: HabitInteractor
     private var cancellable: AnyCancellable?
     
