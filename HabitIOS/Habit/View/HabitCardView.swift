@@ -80,6 +80,7 @@ struct HabitCardView: View {
         )
         // Paddin externo dos cards
         .padding(.horizontal, 4)
+        .padding(.vertical, 8)
         
     }
 }

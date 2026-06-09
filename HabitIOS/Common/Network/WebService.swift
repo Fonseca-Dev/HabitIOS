@@ -15,6 +15,7 @@ enum WebService {
         case postUser = "/users"
         case loginUser = "/auth/login"
         case refreshToken = "/auth/refresh-token"
+        case habits = "/users/me/habits"
     }
     
     enum Method: String {
@@ -52,6 +53,11 @@ enum WebService {
     public static func call<T: Encodable>(path: Endpoint, method: Method = .get, body: T, completion: @escaping (Result) -> Void){
         guard let jsonData = try? JSONEncoder().encode(body) else {return}
         call(path: path, method: method, contentType: .json, data: jsonData, completion: completion)
+    }
+    
+    // Call para buscar habits sem json
+    public static func call(path: Endpoint, method: Method = .get, completion: @escaping (Result) -> Void){
+        call(path: path, method: method, contentType: .json, data: nil, completion: completion)
     }
     
     // Call para o UrlFormCode

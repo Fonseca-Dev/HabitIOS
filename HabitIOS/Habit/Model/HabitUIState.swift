@@ -8,6 +8,6 @@
 enum HabitUIState {
     case loading
     case emptyList
-    case fullList
+    case fullList([HabitCardViewModel])
     case failure(String)
 }

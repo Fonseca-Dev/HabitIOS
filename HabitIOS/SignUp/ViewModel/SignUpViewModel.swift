@@ -48,7 +48,7 @@ class SignUpViewModel: ObservableObject {
         
         // Validar a Data
         guard let dateFormatted = dateFormatted else {
-            self.uiState = .error("Data inváçida \(self.birthdate)")
+            self.uiState = .error("Data inválida \(self.birthdate)")
             return
         }
         
