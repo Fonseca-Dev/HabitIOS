@@ -14,74 +14,73 @@ struct HabitCardView: View {
     var body: some View {
         ZStack(alignment: .trailing) {
             
-            NavigationLink(value: viewModel.id) {
-                EmptyView()
-            }
-            .opacity(0)
-            
-            
-            HStack {
-                Image(systemName: "pencil")
-                    .padding(.horizontal, 8)
+            NavigationLink {
+                viewModel.habitDetailView()
+            } label: {
                 
-                Spacer()
-                
-                HStack(alignment: .top) {
+                HStack {
+                    Image(systemName: "pencil")
+                        .padding(.horizontal, 8)
                     
                     Spacer()
                     
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(viewModel.name)
-                            .foregroundColor(.orange)
+                    HStack(alignment: .top) {
                         
-                        Text(viewModel.label)
-                            .foregroundColor(Color("textColor"))
-                            .bold()
+                        Spacer()
                         
-                        Text(viewModel.date)
-                            .foregroundColor(Color("textColor"))
-                            .bold()
-                    }.frame(maxWidth: 300, alignment: .leading)
-                    
-                    Spacer()
-                    
-                    VStack(alignment: .leading, spacing: 4){
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text(viewModel.name)
+                                .foregroundColor(.orange)
+                            
+                            Text(viewModel.label)
+                                .foregroundColor(Color("textColor"))
+                                .bold()
+                            
+                            Text(viewModel.date)
+                                .foregroundColor(Color("textColor"))
+                                .bold()
+                        }.frame(maxWidth: 300, alignment: .leading)
                         
-                        Text("Registrado")
-                            .foregroundColor(.orange)
-                            .bold()
+                        Spacer()
                         
-                        Text(viewModel.value)
-                            .foregroundColor(Color("textColor"))
-                            .bold()
-                            .multilineTextAlignment(.leading)
+                        VStack(alignment: .leading, spacing: 4){
+                            
+                            Text("Registrado")
+                                .foregroundColor(.orange)
+                                .bold()
+                            
+                            Text(viewModel.value)
+                                .foregroundColor(Color("textColor"))
+                                .bold()
+                                .multilineTextAlignment(.leading)
+                        }
+                        
+                        Spacer()
                     }
                     
                     Spacer()
                 }
+                // Padding interno dos cards
+                .padding()
+                .cornerRadius(4)
                 
-                Spacer()
+                
+                Rectangle()
+                    .frame(width: 8)
+                    .foregroundColor(viewModel.state)
+                
             }
-            // Padding interno dos cards
-            .padding()
-            .cornerRadius(4)
-            
-            
-            Rectangle()
-                .frame(width: 8)
-                .foregroundColor(viewModel.state)
+            .background(
+                RoundedRectangle(cornerRadius: 4)
+                    .stroke(.orange, lineWidth: 1.4)
+                    .shadow(color: .gray, radius: 2, x: 2, y: 2)
+                
+            )
+            // Paddin externo dos cards
+            .padding(.horizontal, 4)
+            .padding(.vertical, 8)
             
         }
-        .background(
-            RoundedRectangle(cornerRadius: 4)
-                .stroke(.orange, lineWidth: 1.4)
-                .shadow(color: .gray, radius: 2, x: 2, y: 2)
-            
-        )
-        // Paddin externo dos cards
-        .padding(.horizontal, 4)
-        .padding(.vertical, 8)
-        
     }
 }
 
