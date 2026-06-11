@@ -81,6 +81,26 @@ struct HabitDetailView: View {
                 }
                 .store(in: &viewModel.cancellables)
         }
+        .alert(
+            "Ops!",
+            isPresented: Binding(
+                get: {
+                    if case .error = viewModel.uiState { return true }
+                    return false
+                },
+                set: { _ in }
+            )
+        ) {
+            Button("Tentar novamente") {
+                viewModel.save()
+            }
+            Button("Cancelar", role: .cancel) { }
+        } message: {
+            if case .error(let msg) = viewModel.uiState {
+                Text(msg)
+            }
+        }
+        
     }
 }
 

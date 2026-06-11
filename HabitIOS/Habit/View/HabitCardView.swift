@@ -20,8 +20,11 @@ struct HabitCardView: View {
             } label: {
                 
                 HStack {
-                    Image(systemName: "pencil")
-                        .padding(.horizontal, 8)
+                    Imageview(url: viewModel.icon)
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 32, height: 32)
+                        .clipShape(Circle())
+                        
                     
                     Spacer()
                     
@@ -91,7 +94,7 @@ struct HabitCardView: View {
             HabitCardView(
                 viewModel: HabitCardViewModel(
                     id: 1,
-                    icon: "https://placehold.co/600x400/png",
+                    icon: "https://cdn.tiagoaguiar.dev/habit_plus/1342/1781191893.073395-1781191893.073126.jpeg",
                     date: "01/01/2021 00:00:00",
                     name: "Tocar guitarra",
                     label: "horas",
