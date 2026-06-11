@@ -68,6 +68,8 @@ struct HabitDetailView: View {
             
             Spacer()
         }
+        .navigationTitle("Registrar hábito")
+        .navigationBarTitleDisplayMode(.inline)
         .padding(.horizontal, 8)
         .padding(.top, 32)
         .onAppear{

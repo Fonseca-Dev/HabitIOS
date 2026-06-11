@@ -44,6 +44,8 @@ struct SignInView: View {
                                 registerLink
                             }
                         }
+                        .navigationTitle("Login")
+                        .navigationBarTitleDisplayMode(.inline)
                         
                         if case SignInUIState.error(let error) = viewModel.uiState {
                             Text("")

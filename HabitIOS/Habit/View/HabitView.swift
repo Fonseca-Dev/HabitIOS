@@ -16,7 +16,7 @@ struct HabitView: View {
             if case HabitUIState.loading = viewModel.uiState {
                 progress
             } else {
-                NavigationView{
+                NavigationStack{
                     
                     ScrollView(showsIndicators: false) {
                         VStack(spacing: 12){
@@ -47,6 +47,8 @@ struct HabitView: View {
                             }
                         }
                     }
+                    .navigationTitle("Hábitos")
+                    .navigationBarTitleDisplayMode(.inline)
                 }
                 .alert(
                     "Ops!",
