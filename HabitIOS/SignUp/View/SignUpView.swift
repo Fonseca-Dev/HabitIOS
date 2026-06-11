@@ -53,7 +53,7 @@ extension SignUpView {
             text: $viewModel.fullname,
             placeholder: "Entre com seu nome completo *",
             keyboard: .alphabet,
-            error: "Nome inválido",
+            error: "Nome deve ter mais de tres caracteres",
             failure: viewModel.fullname.count < 3,
         )
     }

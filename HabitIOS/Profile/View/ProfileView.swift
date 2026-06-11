@@ -11,11 +11,8 @@ struct ProfileView: View {
     
     @ObservedObject var viewModel: ProfileViewModel
     
-    @State var fullName: String = ""
     @State var email: String = "kaue@gmail.com"
     @State var cpf: String = "111.222.333-44"
-    @State var phone: String = "(11) 9 99999-9999"
-    @State var birthDate: String = "11/11/1111"
     @State var selectedGender: Gender? = .male
 
     var body: some View {
@@ -27,9 +24,14 @@ struct ProfileView: View {
                         HStack {
                             Text("Nome")
                             Spacer()
-                            TextField("Digite o nome", text: $fullName)
+                            TextField("Digite o nome", text: $viewModel.fullNameValidation.value)
                                 .keyboardType(.alphabet)
                                 .multilineTextAlignment(.trailing)
+                        }
+                        
+                        if viewModel.fullNameValidation.failure {
+                            Text("Nome deve conter pelo menos 3 caracteres")
+                                .foregroundColor(.red)
                         }
                         
                         HStack {
@@ -53,17 +55,27 @@ struct ProfileView: View {
                         HStack {
                             Text("Celular")
                             Spacer()
-                            TextField("Digite o seu celular", text: $phone)
+                            TextField("Digite o seu celular", text: $viewModel.phoneValidation.value)
                                 .keyboardType(.numberPad)
                                 .multilineTextAlignment(.trailing)
+                        }
+                        
+                        if viewModel.phoneValidation.failure {
+                            Text("Entre com o DDD + 8 ou 9 digitos")
+                                .foregroundColor(.red)
                         }
                         
                         HStack {
                             Text("Data de nascimento")
                             Spacer()
-                            TextField("Digite a sua data de nascimento", text: $birthDate)
+                            TextField("Digite a sua data de nascimento", text: $viewModel.birthdateValidation.value)
                                 .keyboardType(.numberPad)
                                 .multilineTextAlignment(.trailing)
+                        }
+                        
+                        if viewModel.birthdateValidation.failure {
+                            Text("Data deve ser dd/MM/yyyy")
+                                .foregroundColor(.red)
                         }
                         
                         NavigationLink {
