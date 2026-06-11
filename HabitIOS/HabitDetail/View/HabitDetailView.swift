@@ -44,7 +44,7 @@ struct HabitDetailView: View {
             
             LoadingButtonView(
                 action: {
-                    
+                    viewModel.save()
                 },
                 text: "Salvar",
                 disabled: self.viewModel.value.isEmpty,
@@ -74,12 +74,12 @@ struct HabitDetailView: View {
 
 
 #Preview("Light") {
-    let viewModel = HabitDetailViewModel(id: 1, name: "Tocar guitarra", label: "Horas")
+    let viewModel = HabitDetailViewModel(id: 1, name: "Tocar guitarra", label: "Horas", interactor: HabitDetailInteractor())
     HabitDetailView(viewModel: viewModel)
 }
 
 #Preview("Dark") {
-    let viewModel = HabitDetailViewModel(id: 1, name: "Tocar guitarra", label: "Horas")
+    let viewModel = HabitDetailViewModel(id: 1, name: "Tocar guitarra", label: "Horas", interactor: HabitDetailInteractor())
     HabitDetailView(viewModel: viewModel)
         .preferredColorScheme(.dark)
 }

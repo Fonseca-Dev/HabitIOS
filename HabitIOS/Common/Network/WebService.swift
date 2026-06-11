@@ -16,6 +16,7 @@ enum WebService {
         case loginUser = "/auth/login"
         case refreshToken = "/auth/refresh-token"
         case habits = "/users/me/habits"
+        case habitValues = "/users/me/habits/%d/values"
     }
     
     enum Method: String {
@@ -42,8 +43,8 @@ enum WebService {
         case formUrl = "application/x-www-form-urlencoded"
     }
     
-    private static func completeUrl(path: Endpoint) -> URLRequest? {
-        guard let url = URL(string: "\(Endpoint.base.rawValue)\(path.rawValue)") else {return nil}
+    private static func completeUrl(path: String) -> URLRequest? {
+        guard let url = URL(string: "\(Endpoint.base.rawValue)\(path)") else {return nil}
         
         return URLRequest(url: url)
     }
@@ -52,24 +53,30 @@ enum WebService {
     // <T: Encodable> -> Esse metodo podera receber qualquer coisa que tiver o protocol Encodable
     public static func call<T: Encodable>(path: Endpoint, method: Method = .get, body: T, completion: @escaping (Result) -> Void){
         guard let jsonData = try? JSONEncoder().encode(body) else {return}
+        call(path: path.rawValue, method: method, contentType: .json, data: jsonData, completion: completion)
+    }
+    
+    // Call para inputar Value no Habit, onde o parametro vem na URL
+    public static func call<T: Encodable>(path: String, method: Method = .get, body: T, completion: @escaping (Result) -> Void){
+        guard let jsonData = try? JSONEncoder().encode(body) else {return}
         call(path: path, method: method, contentType: .json, data: jsonData, completion: completion)
     }
     
     // Call para buscar habits sem json
     public static func call(path: Endpoint, method: Method = .get, completion: @escaping (Result) -> Void){
-        call(path: path, method: method, contentType: .json, data: nil, completion: completion)
+        call(path: path.rawValue, method: method, contentType: .json, data: nil, completion: completion)
     }
     
     // Call para o UrlFormCode
     public static func call(path: Endpoint, method: Method = .post, params: [URLQueryItem], completion: @escaping (Result) -> Void){
-        guard var urlRequest = completeUrl(path: path) else {return}
+        guard let urlRequest = completeUrl(path: path.rawValue) else {return}
         guard let absoluteUrl = urlRequest.url?.absoluteString else {return}
         var components = URLComponents(string: absoluteUrl)
         components?.queryItems = params
-        call(path: path, method: method, contentType: .formUrl, data: components?.query?.data(using: .utf8), completion: completion)
+        call(path: path.rawValue, method: method, contentType: .formUrl, data: components?.query?.data(using: .utf8), completion: completion)
     }
     
-    private static func call(path: Endpoint, method: Method, contentType: ContentType, data: Data?, completion: @escaping (Result) -> Void){
+    private static func call(path: String, method: Method, contentType: ContentType, data: Data?, completion: @escaping (Result) -> Void){
         guard var urlRequest = completeUrl(path: path) else {return}
         
         _ = LocalDataSource.shared.getUserAuth()
