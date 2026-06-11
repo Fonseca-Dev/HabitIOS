@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct HabitCardView: View {
         
@@ -95,7 +96,8 @@ struct HabitCardView: View {
                     name: "Tocar guitarra",
                     label: "horas",
                     value: "2",
-                    state: .green
+                    state: .green,
+                    habitPublisher: PassthroughSubject<Bool, Never>()
                 )
             )
             HabitCardView(
@@ -106,7 +108,8 @@ struct HabitCardView: View {
                     name: "Tocar guitarra",
                     label: "horas",
                     value: "2",
-                    state: .green
+                    state: .green,
+                    habitPublisher: PassthroughSubject<Bool, Never>()
                 )
             )
         }

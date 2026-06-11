@@ -44,20 +44,27 @@ struct HabitView: View {
                                     ForEach(rows, content: HabitCardView.init(viewModel:))
                                 }.padding(.horizontal, 14)
                                 
-                            } else if case HabitUIState.failure(let msg) = viewModel.uiState {
-                                Text("")
-                                    .alert(isPresented: .constant(true)){
-                                        Alert(
-                                            title: Text("Ops! \(msg)"),
-                                            message: Text("Tentar novamente?"),
-                                            primaryButton: .default(Text("Sim")) {
-                                                viewModel.onAppear()
-                                            },
-                                            secondaryButton: .cancel()
-                                        )
-                                    }
                             }
                         }
+                    }
+                }
+                .alert(
+                    "Ops!",
+                    isPresented: Binding(
+                        get: {
+                            if case .failure = viewModel.uiState { return true }
+                            return false
+                        },
+                        set: { _ in }
+                    )
+                ) {
+                    Button("Tentar novamente") {
+                        viewModel.onAppear()
+                    }
+                    Button("Cancelar", role: .cancel) { }
+                } message: {
+                    if case .failure(let msg) = viewModel.uiState {
+                        Text(msg)
                     }
                 }
             }

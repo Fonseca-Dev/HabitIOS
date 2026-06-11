@@ -19,14 +19,24 @@ class HabitViewModel: ObservableObject {
         
     private let interactor: HabitInteractor
     private var cancellable: AnyCancellable?
+    private var cancellablePublisher: AnyCancellable?
+    
+    // Aqui comeca o fluxo do observador
+    // HabitViewModel -> HabitCardViewModel -> HabitDetailViewModel
+    private let habitPublisher = PassthroughSubject<Bool, Never>()
     
     
     init(interactor: HabitInteractor){
         self.interactor = interactor
+        cancellablePublisher = habitPublisher.sink(receiveValue: { isCompleted in
+            print("Saved: \(isCompleted)")
+            self.onAppear()
+        })
     }
     
     deinit{
         cancellable?.cancel()
+        cancellablePublisher?.cancel()
     }
     
     func onAppear() {
@@ -77,9 +87,10 @@ class HabitViewModel: ObservableObject {
                                     name: $0.name,
                                     label: $0.label,
                                     value: "\($0.value ?? 0)",
-                                    state: state
+                                    state: state,
+                                    // Aqui é onde eu passo o observador da HabitViewModel para HabitCardViewModel
+                                    habitPublisher: self.habitPublisher
                                 )
-                                
                             }
                         )
                     }

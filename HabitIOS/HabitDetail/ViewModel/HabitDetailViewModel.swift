@@ -14,6 +14,10 @@ class HabitDetailViewModel: ObservableObject {
     
     private var cancellable: AnyCancellable?
     
+    // Declaracao de cancelables e publisher, pois a tela de Habit vai estar obersevando a tela de HabitDetail
+    var cancellables = Set<AnyCancellable>()
+    var habitPublisher: PassthroughSubject<Bool, Never>!
+    
     let id: Int
     let name: String
     let label: String
@@ -28,6 +32,9 @@ class HabitDetailViewModel: ObservableObject {
     
     deinit {
         cancellable?.cancel()
+        for cancellable in cancellables {
+            cancellable.cancel()
+        }
     }
     
     func save(){
@@ -45,7 +52,7 @@ class HabitDetailViewModel: ObservableObject {
                 }
             }, receiveValue: { success in
                 if success {
-                    self.uiState = .success
+                    self.habitPublisher.send(success)
                 }
             })
     }

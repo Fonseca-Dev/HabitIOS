@@ -6,10 +6,13 @@
 //
 
 import SwiftUI
+import Combine
 
 enum HabitCardViewRouter {
-    static func makeHabitDetailView(id: Int, name: String, label: String) -> some View {
+    static func makeHabitDetailView(id: Int, name: String, label: String, habitPublisher: PassthroughSubject<Bool, Never>) -> some View {
         let viewModel = HabitDetailViewModel(id: id, name: name, label: label, interactor: HabitDetailInteractor())
+        // Aqui é onde eu passo o observador da HabitCardViewModel para HabitDetailViewModel
+        viewModel.habitPublisher = habitPublisher
         return HabitDetailView(viewModel: viewModel)
     }
 }

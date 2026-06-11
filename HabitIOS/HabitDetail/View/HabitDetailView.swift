@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct HabitDetailView: View {
     
@@ -69,6 +70,17 @@ struct HabitDetailView: View {
         }
         .padding(.horizontal, 8)
         .padding(.top, 32)
+        .onAppear{
+            // Aqui estamos observando a uiState da HabitDetailViewModel
+            // Funciona pq a variavel uiState é um Publisher onde ela tem um observavel
+            viewModel.$uiState
+                .sink { state in
+                    if state == .success {
+                        self.presentationMode.wrappedValue.dismiss()
+                    }
+                }
+                .store(in: &viewModel.cancellables)
+        }
     }
 }
 
@@ -83,4 +95,3 @@ struct HabitDetailView: View {
     HabitDetailView(viewModel: viewModel)
         .preferredColorScheme(.dark)
 }
-
