@@ -11,6 +11,12 @@ struct ProfileView: View {
     
     @ObservedObject var viewModel: ProfileViewModel
     
+    var disableDone: Bool {
+        viewModel.fullNameValidation.failure ||
+        viewModel.phoneValidation.failure ||
+        viewModel.birthdateValidation.failure
+    }
+    
     @State var email: String = "kaue@gmail.com"
     @State var cpf: String = "111.222.333-44"
     @State var selectedGender: Gender? = .male
@@ -82,26 +88,39 @@ struct ProfileView: View {
                             viewModel.genderSelectorView(selectedGender: $selectedGender, title: "Selecione seu sexo", genders: Gender.allCases)
                         } label: {
                             HStack {
-                                    Text("Gênero")
-                                    
-                                    Spacer()
-                                    
-                                    Text(selectedGender?.rawValue ?? "")
-                                }
-                                .frame(maxWidth: .infinity, alignment: .leading)
+                                Text("Gênero")
+                                
+                                Spacer()
+                                
+                                Text(selectedGender?.rawValue ?? "")
+                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
                         }
                         
                     } header: {
                         Text("DADOS CADASTRAIS")
                     }
-
+                    
                 }
             }
             .navigationTitle("Editar Perfil")
             .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    if !disableDone {
+                        Button(action: {
+                            print("Done")
+                        }) {
+                            Image(systemName: "checkmark")
+                        }
+                    }
+                }
+            }
         }
     }
 }
+
+    
 
 #Preview {
     ProfileView(viewModel: ProfileViewModel())
