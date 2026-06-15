@@ -10,7 +10,7 @@ import Combine
 class HomeViewModel: ObservableObject {
     // Ajustado para nao ficar recriando a viewModel toda vez que clicarmos no item da TabBar
     let habitViewModel = HabitViewModel(interactor: HabitInteractor())
-    let profileViewModel = ProfileViewModel()
+    let profileViewModel = ProfileViewModel(interactor: ProfileInteractor())
 }
 
 extension HomeViewModel{

@@ -17,6 +17,7 @@ enum WebService {
         case refreshToken = "/auth/refresh-token"
         case habits = "/users/me/habits"
         case habitValues = "/users/me/habits/%d/values"
+        case fetchUser = "/users/me"
     }
     
     enum Method: String {
