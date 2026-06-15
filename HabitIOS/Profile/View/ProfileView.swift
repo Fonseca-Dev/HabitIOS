@@ -112,16 +112,20 @@ struct ProfileView: View {
                         ToolbarItem(placement: .navigationBarTrailing) {
                             if !disableDone {
                                 Button(action: {
-                                    print("Done")
+                                    viewModel.updateUser()
                                 }) {
-                                    Image(systemName: "checkmark")
+                                    if case ProfileUIState.udpdateLoading = viewModel.uiState {
+                                        ProgressView()
+                                    } else {
+                                        Image(systemName: "checkmark")
+                                    }
                                 }
                             }
                         }
                     }
                 }
                 .alert(
-                    "Ops!",
+                    "Habit",
                     isPresented: Binding(
                         get: {
                             if case .fectchError = viewModel.uiState { return true }
@@ -138,6 +142,41 @@ struct ProfileView: View {
                     if case .fectchError(let msg) = viewModel.uiState {
                         Text(msg)
                     }
+                }
+                .alert(
+                    "Habit",
+                    isPresented: Binding(
+                        get: {
+                            if case .updateError = viewModel.uiState { return true }
+                            return false
+                        },
+                        set: { _ in }
+                    )
+                ) {
+                    Button("Tentar novamente") {
+                        viewModel.updateUser()
+                    }
+                    Button("Cancelar", role: .cancel) { }
+                } message: {
+                    if case .updateError(let msg) = viewModel.uiState {
+                        Text(msg)
+                    }
+                }
+                .alert(
+                    "Habit",
+                    isPresented: Binding(
+                        get: {
+                            if case .updateSuccess = viewModel.uiState { return true }
+                            return false
+                        },
+                        set: { _ in }
+                    )
+                ) {
+                    Button("Ok") {
+                        viewModel.uiState = .none
+                    }
+                } message: {
+                    Text("Dados atualizados com sucesso!")
                 }
             }
         }.onAppear(perform: viewModel.fecthUser)

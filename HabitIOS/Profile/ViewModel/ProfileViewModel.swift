@@ -20,7 +20,8 @@ class ProfileViewModel: ObservableObject{
     @Published var document = ""
     @Published var gender: Gender?
     
-    private var cancellable: AnyCancellable?
+    private var cancellableFetch: AnyCancellable?
+    private var cancellableUpdate: AnyCancellable?
     private let interactor: ProfileInteractor
     
     init(interactor: ProfileInteractor){
@@ -28,13 +29,14 @@ class ProfileViewModel: ObservableObject{
     }
     
     deinit {
-        cancellable?.cancel()
+        cancellableFetch?.cancel()
+        cancellableUpdate?.cancel()
     }
     
     func fecthUser() {
         self.uiState = .loading
         
-        cancellable = interactor.fecthUser()
+        cancellableFetch = interactor.fecthUser()
             .receive(on: DispatchQueue.main)
             .sink(
                 receiveCompletion: { completion in
@@ -75,6 +77,51 @@ class ProfileViewModel: ObservableObject{
                     self.uiState = .fetchSuccess
                 }
             )
+    }
+    
+    func updateUser() {
+        self.uiState = .udpdateLoading
+        
+        guard let userId = userId,
+              let gender = gender else { return }
+        
+        // Pegar a String -> dd/MM/yyyy -> Date
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.dateFormat = "dd/MM/yyyy"
+        
+        let dateFormatted = formatter.date(from: birthdateValidation.value)
+        
+        // Validar a Data
+        guard let dateFormatted = dateFormatted else {
+            self.uiState = .updateError("Data inválida \(self.birthdateValidation.value)")
+            return
+        }
+        
+        // Date -> yyyy-MM-dd -> String
+        formatter.dateFormat = "yyyy-MM-dd"
+        let birthdate = formatter.string(from: dateFormatted)
+        
+        let request = ProfileRequest(
+            fullname: fullNameValidation.value,
+            phone: phoneValidation.value,
+            birthdate: birthdate,
+            gender: gender.index
+        )
+        
+        cancellableUpdate = interactor.updateUser(userId: userId, request: request)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completion in
+                switch(completion){
+                case .failure(let appError):
+                    self.uiState =  .updateError(appError.message)
+                    break
+                case .finished:
+                    break
+                }
+            }, receiveValue: { profileResponse in
+                self.uiState = .updateSuccess
+            })
     }
     
 }
