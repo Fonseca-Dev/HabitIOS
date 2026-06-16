@@ -6,13 +6,22 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		B08E26673570AE80BE46001E /* Pods_HabitIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CDD539FBDB0B8D9682BBEDA /* Pods_HabitIOS.framework */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
+		50C0347B5B327801E289FEC8 /* Pods-HabitIOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HabitIOS.release.xcconfig"; path = "Target Support Files/Pods-HabitIOS/Pods-HabitIOS.release.xcconfig"; sourceTree = "<group>"; };
+		5CDD539FBDB0B8D9682BBEDA /* Pods_HabitIOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HabitIOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A39F9ED184F2B0A23B41CDE4 /* Pods-HabitIOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HabitIOS.debug.xcconfig"; path = "Target Support Files/Pods-HabitIOS/Pods-HabitIOS.debug.xcconfig"; sourceTree = "<group>"; };
 		D2F53A172FC080B50025452A /* HabitIOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HabitIOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		D2F53A192FC080B50025452A /* HabitIOS */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = HabitIOS;
 			sourceTree = "<group>";
 		};
@@ -23,17 +32,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B08E26673570AE80BE46001E /* Pods_HabitIOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		39AD3262CAA7D5F7F14FA855 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				A39F9ED184F2B0A23B41CDE4 /* Pods-HabitIOS.debug.xcconfig */,
+				50C0347B5B327801E289FEC8 /* Pods-HabitIOS.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		D1C0F4A843AF717E0CE483C4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5CDD539FBDB0B8D9682BBEDA /* Pods_HabitIOS.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		D2F53A0E2FC080B50025452A = {
 			isa = PBXGroup;
 			children = (
 				D2F53A192FC080B50025452A /* HabitIOS */,
 				D2F53A182FC080B50025452A /* Products */,
+				39AD3262CAA7D5F7F14FA855 /* Pods */,
+				D1C0F4A843AF717E0CE483C4 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -52,9 +81,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D2F53A222FC080BD0025452A /* Build configuration list for PBXNativeTarget "HabitIOS" */;
 			buildPhases = (
+				79EF8CA74876F316DA5E0434 /* [CP] Check Pods Manifest.lock */,
 				D2F53A132FC080B50025452A /* Sources */,
 				D2F53A142FC080B50025452A /* Frameworks */,
 				D2F53A152FC080B50025452A /* Resources */,
+				1D84303EDE6023567B89437C /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -64,8 +95,6 @@
 				D2F53A192FC080B50025452A /* HabitIOS */,
 			);
 			name = HabitIOS;
-			packageProductDependencies = (
-			);
 			productName = HabitIOS;
 			productReference = D2F53A172FC080B50025452A /* HabitIOS.app */;
 			productType = "com.apple.product-type.application";
@@ -113,6 +142,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		1D84303EDE6023567B89437C /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-HabitIOS/Pods-HabitIOS-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-HabitIOS/Pods-HabitIOS-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HabitIOS/Pods-HabitIOS-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		79EF8CA74876F316DA5E0434 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-HabitIOS-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		D2F53A132FC080B50025452A /* Sources */ = {
@@ -163,7 +234,7 @@
 				DEVELOPMENT_TEAM = V248ZWG78B;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -227,7 +298,7 @@
 				DEVELOPMENT_TEAM = V248ZWG78B;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -248,6 +319,7 @@
 		};
 		D2F53A232FC080BD0025452A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A39F9ED184F2B0A23B41CDE4 /* Pods-HabitIOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -255,6 +327,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = V248ZWG78B;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -281,6 +354,7 @@
 		};
 		D2F53A242FC080BD0025452A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 50C0347B5B327801E289FEC8 /* Pods-HabitIOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -288,6 +362,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = V248ZWG78B;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
