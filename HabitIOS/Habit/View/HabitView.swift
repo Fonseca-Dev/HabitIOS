@@ -20,10 +20,11 @@ struct HabitView: View {
                     
                     ScrollView(showsIndicators: false) {
                         VStack(spacing: 12){
-                            
-                            topContainer
-                            
-                            addButton
+                            if !viewModel.isCharts {
+                                topContainer
+                                
+                                addButton
+                            }
                             
                             if case HabitUIState.emptyList = viewModel.uiState {
                                 
@@ -41,7 +42,9 @@ struct HabitView: View {
                             } else if case HabitUIState.fullList(let rows) = viewModel.uiState {
                                 
                                 LazyVStack {
-                                    ForEach(rows, content: HabitCardView.init(viewModel:))
+                                    ForEach(rows) { row in
+                                        HabitCardView(viewModel: row, isChart: viewModel.isCharts)
+                                    }
                                 }.padding(.horizontal, 14)
                                 
                             }
@@ -130,10 +133,10 @@ extension HabitView{
 }
 
 #Preview("Light") {
-    HomeViewRouter.makeHabitView(viewModel: HabitViewModel(interactor: HabitInteractor()))
+    HomeViewRouter.makeHabitView(viewModel: HabitViewModel(isCharts: false, interactor: HabitInteractor()))
 }
 
 #Preview("Dark") {
-    HomeViewRouter.makeHabitView(viewModel: HabitViewModel(interactor: HabitInteractor()))
+    HomeViewRouter.makeHabitView(viewModel: HabitViewModel(isCharts: false, interactor: HabitInteractor()))
         .preferredColorScheme(.dark)
 }

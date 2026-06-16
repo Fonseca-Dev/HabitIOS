@@ -9,7 +9,8 @@ import Combine
 
 class HomeViewModel: ObservableObject {
     // Ajustado para nao ficar recriando a viewModel toda vez que clicarmos no item da TabBar
-    let habitViewModel = HabitViewModel(interactor: HabitInteractor())
+    let habitViewModel = HabitViewModel(isCharts: false, interactor: HabitInteractor())
+    let habitForChartsViewModel = HabitViewModel(isCharts: true, interactor: HabitInteractor())
     let profileViewModel = ProfileViewModel(interactor: ProfileInteractor())
 }
 
@@ -20,5 +21,9 @@ extension HomeViewModel{
     
     func profileView() -> some View {
         return HomeViewRouter.makeProfileView(viewModel: profileViewModel)
+    }
+    
+    func habitForChartView() -> some View {
+        return HomeViewRouter.makeHabitView(viewModel: habitForChartsViewModel)
     }
 }

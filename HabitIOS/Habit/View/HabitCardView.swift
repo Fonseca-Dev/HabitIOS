@@ -11,12 +11,17 @@ import Combine
 struct HabitCardView: View {
         
     let viewModel: HabitCardViewModel
+    let isChart: Bool
     
     var body: some View {
         ZStack(alignment: .trailing) {
             
             NavigationLink {
-                viewModel.habitDetailView()
+                if isChart {
+                    viewModel.chartView()
+                } else {
+                    viewModel.habitDetailView()
+                }
             } label: {
                 
                 HStack {
@@ -68,10 +73,11 @@ struct HabitCardView: View {
                 .padding()
                 .cornerRadius(4)
                 
-                
-                Rectangle()
-                    .frame(width: 8)
-                    .foregroundColor(viewModel.state)
+                if !isChart {
+                    Rectangle()
+                        .frame(width: 8)
+                        .foregroundColor(viewModel.state)
+                }
                 
             }
             .background(
@@ -101,7 +107,8 @@ struct HabitCardView: View {
                     value: "2",
                     state: .green,
                     habitPublisher: PassthroughSubject<Bool, Never>()
-                )
+                ),
+                isChart: false
             )
             HabitCardView(
                 viewModel: HabitCardViewModel(
@@ -113,7 +120,8 @@ struct HabitCardView: View {
                     value: "2",
                     state: .green,
                     habitPublisher: PassthroughSubject<Bool, Never>()
-                )
+                ),
+                isChart: false
             )
         }
         .listStyle(.plain)

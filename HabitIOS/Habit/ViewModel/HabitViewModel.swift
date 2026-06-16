@@ -24,10 +24,12 @@ class HabitViewModel: ObservableObject {
     // Aqui comeca o fluxo do observador
     // HabitViewModel -> HabitCardViewModel -> HabitDetailViewModel
     private let habitPublisher = PassthroughSubject<Bool, Never>()
+    let isCharts: Bool
     
     
-    init(interactor: HabitInteractor){
+    init(isCharts: Bool, interactor: HabitInteractor){
         self.interactor = interactor
+        self.isCharts = isCharts
         cancellablePublisher = habitPublisher.sink(receiveValue: { isCompleted in
             print("Saved: \(isCompleted)")
             self.onAppear()

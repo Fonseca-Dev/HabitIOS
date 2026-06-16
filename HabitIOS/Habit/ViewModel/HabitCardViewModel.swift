@@ -32,4 +32,8 @@ extension HabitCardViewModel {
         // Aqui é onde eu passo o observador da HabitCardViewModel para HabitDetailViewModel
         return HabitCardViewRouter.makeHabitDetailView(id: id, name: name, label: label, habitPublisher: habitPublisher)
     }
+    
+    func chartView() -> some View {
+        return HabitCardViewRouter.makeChartView(id: id)
+    }
 }
