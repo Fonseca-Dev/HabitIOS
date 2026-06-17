@@ -69,6 +69,11 @@ enum WebService {
         call(path: path.rawValue, method: method, contentType: .json, data: nil, completion: completion)
     }
     
+    // Call para buscar habitsValues sem json, porem com parametro na URL
+    public static func call(path: String, method: Method = .get, completion: @escaping (Result) -> Void){
+        call(path: path, method: method, contentType: .json, data: nil, completion: completion)
+    }
+    
     // Call para o UrlFormCode
     public static func call(path: Endpoint, method: Method = .post, params: [URLQueryItem], completion: @escaping (Result) -> Void){
         guard let urlRequest = completeUrl(path: path.rawValue) else {return}
