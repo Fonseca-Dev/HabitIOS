@@ -43,7 +43,17 @@ class ChartViewModel: ObservableObject {
                     }
                 },
                 receiveValue: { res in
-                    
+                    if res.isEmpty {
+                        self.uiState = .emptyChart
+                    } else {
+                        self.dates = res.map{ $0.createdDate }
+                        
+                        self.entries = zip(res.startIndex..<res.endIndex, res).map { index, res in
+                            ChartDataEntry(x: Double(index), y: Double(res.value))
+                        }
+                        
+                        self.uiState = .fullChart
+                    }
                 }
             )
     }
