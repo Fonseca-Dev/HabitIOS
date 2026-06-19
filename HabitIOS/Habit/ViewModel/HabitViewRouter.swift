@@ -10,7 +10,7 @@ import Combine
 
 enum HabitViewRouter {
     static func makeHabitCreateView(habitPublisher: PassthroughSubject<Bool, Never>) -> some View {
-        let viewModel = HabitCreateViewModel(interactor: HabitDetailInteractor())
+        let viewModel = HabitCreateViewModel(interactor: HabitCreateInteractor())
         // Aqui é onde eu passo o observador da HabitCardViewModel para HabitCreateViewModel
         viewModel.habitPublisher = habitPublisher
         return HabitCreateView(viewModel: viewModel)

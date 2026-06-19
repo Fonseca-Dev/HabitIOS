@@ -138,12 +138,12 @@ struct HabitCreateView: View {
 
 
 #Preview("Light") {
-    let viewModel = HabitCreateViewModel(interactor: HabitDetailInteractor())
+    let viewModel = HabitCreateViewModel(interactor: HabitCreateInteractor())
     HabitCreateView(viewModel: viewModel)
 }
 
 #Preview("Dark") {
-    let viewModel = HabitCreateViewModel(interactor: HabitDetailInteractor())
+    let viewModel = HabitCreateViewModel(interactor: HabitCreateInteractor())
     HabitCreateView(viewModel: viewModel)
         .preferredColorScheme(.dark)
 }
