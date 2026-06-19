@@ -39,9 +39,9 @@ class HabitCreateViewModel: ObservableObject {
         
         cancellable = interactor.save(
             request: HabitCreateRequest(
-                imageDate: imageData,
+                imageData: imageData,
                 name: name,
-                label: label
+                label: label,
             )
         )
         .receive(on: DispatchQueue.main)
@@ -54,7 +54,7 @@ class HabitCreateViewModel: ObservableObject {
             }
         }, receiveValue: { habit in
             self.uiState = .success
-            self.habitPublisher.send(true)
+            self.habitPublisher?.send(true)
         })
     }
 }

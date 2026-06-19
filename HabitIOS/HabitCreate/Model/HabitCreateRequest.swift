@@ -8,7 +8,7 @@
 import Foundation
 
 struct HabitCreateRequest {
-    let imageDate: Data?
+    let imageData: Data?
     let name: String
     let label: String
 }
