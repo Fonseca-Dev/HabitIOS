@@ -30,7 +30,7 @@ struct HabitCreateView: View {
                     self.shouldPresentCamera = true
                 } label: {
                     VStack{
-                        Image(systemName: "camera.fill")
+                        viewModel.image!
                             .resizable()
                             .scaledToFit()
                             .frame(width: 100, height: 100)
@@ -41,6 +41,14 @@ struct HabitCreateView: View {
                     }
                 }
                 .padding(.bottom, 12)
+                // Esse sheet é o modal do iOS
+                .sheet(isPresented: $shouldPresentCamera) {
+                    ImagePickerView(
+                        isPresented: $shouldPresentCamera,
+                        image: $viewModel.image,
+                        imageData: $viewModel.imageData
+                    )
+                }
 
             }
             
