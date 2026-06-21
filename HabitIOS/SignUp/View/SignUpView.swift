@@ -66,7 +66,8 @@ extension SignUpView {
             placeholder: "Entre com seu e-mail *",
             keyboard: .emailAddress,
             error: "e-mail invalido",
-            failure: !viewModel.email.isEmail()
+            failure: !viewModel.email.isEmail(),
+            autocapitalization: .words
         )
     }
 }
