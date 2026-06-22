@@ -90,29 +90,24 @@ extension SignUpView {
         EditTextView(
             text: $viewModel.document,
             placeholder: "Entre com seu CPF *",
+            mask:"###.###.###-##",
             keyboard: .numberPad,
             error: "CPF invalido",
-            failure: viewModel.document.count < 11,
+            failure: viewModel.document.count != 14,
         )
     }
 }
 
 extension SignUpView {
     var phoneField: some View {
-        let fieldOnlyNumbers = viewModel.phone.filter{$0.isNumber}
         return EditTextView(
             text: $viewModel.phone,
             placeholder: "Entre com seu celular *",
+            mask: "(##) ####-####",
             keyboard: .numberPad,
             error: "Entre com o DDD + 8 ou 9 digitos",
-            failure: fieldOnlyNumbers.count < 10 || fieldOnlyNumbers.count >= 12
+            failure: viewModel.phone.count < 14 || viewModel.phone.count > 15
         )
-        .onChange(of: viewModel.phone) { newValue in
-            viewModel.phone = Validation.mask(
-                pattern: "(##)#.####-####",
-                value: newValue
-            )
-        }
     }
 }
 
@@ -121,16 +116,11 @@ extension SignUpView {
         EditTextView(
             text: $viewModel.birthdate,
             placeholder: "Entre com sua data de nascimento *",
+            mask: "##/##/####",
             keyboard: .numberPad,
             error: "Data deve ser dd/MM/yyyy",
             failure: viewModel.birthdate.count != 10,
         )
-        .onChange(of: viewModel.birthdate) { newValue in
-            viewModel.birthdate = Validation.mask(
-                pattern: "##/##/####",
-                value: newValue
-            )
-        }
     }
 }
 
@@ -149,7 +139,6 @@ extension SignUpView {
 
 extension SignUpView {
     var saveButton: some View {
-        let fieldOnlyNumbers = viewModel.phone.filter{$0.isNumber}
         return LoadingButtonView(
             action: {
                 viewModel.signUp()
@@ -159,8 +148,8 @@ extension SignUpView {
                 !viewModel.email.isEmail() ||
             viewModel.password.count < 8 ||
             viewModel.fullname.count < 3 ||
-            viewModel.document.count < 11 ||
-            fieldOnlyNumbers.count < 10 || fieldOnlyNumbers.count >= 12 ||
+            viewModel.document.count != 14 ||
+            viewModel.phone.count < 14 || viewModel.phone.count > 15 ||
             viewModel.birthdate.count != 10,
             showProgressBar: self.viewModel.uiState == SignUpUIState.loading
         )

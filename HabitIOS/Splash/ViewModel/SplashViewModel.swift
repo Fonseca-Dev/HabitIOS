@@ -80,6 +80,6 @@ extension SplashViewModel {
     }
     
     func homeView() -> some View {
-        return SignInViewRouter.makeHomeView()
+        return SplashViewRouter.makeHomeView()
     }
 }

@@ -20,22 +20,26 @@ class SignInViewModel: ObservableObject {
     // Quando abre a SignInView ja deixa o observavel preparado
     private let publisher = PassthroughSubject<Bool, Never>()
     private let interactor: SignInInteractor
+    private let homeViewModel: HomeViewModel
     
     @Published var uiState: SignInUIState = .none
     
     // O SignInViewModel começa a escutar esse publisher
     // sink significa: "quando chegar um valor nesse publisher, execute esse bloco".
     // Então sempre que alguém fizer: publisher.send(valor) esse código vai rodar.
-    init(interactor: SignInInteractor){
-        self.interactor = interactor
-        cancellable = publisher.sink { value  in
-            print("Usuario criado! goToHome: \(value)")
-            
-            if value {
-                self.uiState = .goToHomeScreen
+    init(
+        interactor: SignInInteractor,
+        homeViewModel: HomeViewModel){
+            self.interactor = interactor
+            self.homeViewModel = homeViewModel
+            cancellable = publisher.sink { value  in
+                print("Usuario criado! goToHome: \(value)")
+                
+                if value {
+                    self.uiState = .goToHomeScreen
+                }
             }
         }
-    }
     
     deinit{
         cancellable?.cancel()
@@ -93,7 +97,7 @@ class SignInViewModel: ObservableObject {
 
 extension SignInViewModel {
     func homeView() -> some View {
-        return SignInViewRouter.makeHomeView()
+        return SignInViewRouter.makeHomeView(homeViewModel: homeViewModel)
     }
     
     // O publisher é enviado para a tela de cadastro

@@ -16,7 +16,7 @@ struct ProfileView: View {
         viewModel.phoneValidation.failure ||
         viewModel.birthdateValidation.failure
     }
-
+    
     var body: some View {
         ZStack{
             if case ProfileUIState.loading = viewModel.uiState {
@@ -64,9 +64,12 @@ struct ProfileView: View {
                                 HStack {
                                     Text("Celular")
                                     Spacer()
-                                    TextField("Digite o seu celular", text: $viewModel.phoneValidation.value)
-                                        .keyboardType(.numberPad)
-                                        .multilineTextAlignment(.trailing)
+                                    ProfileEditTextView(
+                                        text: $viewModel.phoneValidation.value,
+                                        placeholder: "Digite o seu celular",
+                                        mask: "(##) ####-####",
+                                        keyboard: .numberPad
+                                    )
                                 }
                                 
                                 if viewModel.phoneValidation.failure {
@@ -77,9 +80,12 @@ struct ProfileView: View {
                                 HStack {
                                     Text("Data de nascimento")
                                     Spacer()
-                                    TextField("Digite a sua data de nascimento", text: $viewModel.birthdateValidation.value)
-                                        .keyboardType(.numberPad)
-                                        .multilineTextAlignment(.trailing)
+                                    ProfileEditTextView(
+                                        text: $viewModel.birthdateValidation.value,
+                                        placeholder: "Digite a sua data de nascimento",
+                                        mask: "##/##/####",
+                                        keyboard: .numberPad
+                                    )
                                 }
                                 
                                 if viewModel.birthdateValidation.failure {
@@ -183,7 +189,7 @@ struct ProfileView: View {
     }
 }
 
-    
+
 
 #Preview {
     ProfileView(viewModel: ProfileViewModel(interactor: ProfileInteractor()))
